@@ -103,8 +103,8 @@ PARAM_DEFINE_INT32(CBRK_AIRSPD_CHK, 0);
 /**
  * Circuit breaker for flight termination
  *
- * Setting this parameter to 121212 will disable the flight termination action.
- * --> The IO driver will not do flight termination if requested by the FMU
+ * Setting this parameter to 121212 will disable the flight termination action if triggered
+ * by the FailureDetector logic or if FMU is lost.
  * WARNING: ENABLING THIS CIRCUIT BREAKER IS AT OWN RISK
  *
  * @reboot_required true

@@ -2216,83 +2216,33 @@ Commander::run()
 			}
 		}
 
-		/* Check for failure combinations which lead to flight termination */
-		if (armed.armed &&
-		    !status_flags.circuit_breaker_flight_termination_disabled) {
-			/* At this point the data link and the gps system have been checked
-			 * If we are not in a manual (RC stick controlled mode)
-			 * and both failed we want to terminate the flight */
-			if (internal_state.main_state != commander_state_s::MAIN_STATE_MANUAL &&
-			    internal_state.main_state != commander_state_s::MAIN_STATE_ACRO &&
-			    internal_state.main_state != commander_state_s::MAIN_STATE_RATTITUDE &&
-			    internal_state.main_state != commander_state_s::MAIN_STATE_STAB &&
-			    internal_state.main_state != commander_state_s::MAIN_STATE_ALTCTL &&
-			    internal_state.main_state != commander_state_s::MAIN_STATE_POSCTL &&
-			    status.data_link_lost) {
+		/* Check for failure detector status */
+		const bool failure_detector_updated = _failure_detector.update();
 
-				armed.force_failsafe = true;
+		if (failure_detector_updated) {
+
+			const uint8_t failure_status = _failure_detector.get_status();
+
+			if (failure_status != status.failure_detector_status) {
+				status.failure_detector_status = failure_status;
 				status_changed = true;
-				static bool flight_termination_printed = false;
-
-				if (!flight_termination_printed) {
-					mavlink_log_critical(&mavlink_log_pub, "DL and GPS lost: flight termination");
-					flight_termination_printed = true;
-				}
-
-				if (counter % (1000000 / COMMANDER_MONITORING_INTERVAL) == 0) {
-					mavlink_log_critical(&mavlink_log_pub, "DL and GPS lost: flight termination");
-				}
-			}
-
-			/* At this point the rc signal and the gps system have been checked
-			 * If we are in manual (controlled with RC):
-			 * if both failed we want to terminate the flight */
-			if ((internal_state.main_state == commander_state_s::MAIN_STATE_ACRO ||
-			     internal_state.main_state == commander_state_s::MAIN_STATE_RATTITUDE ||
-			     internal_state.main_state == commander_state_s::MAIN_STATE_MANUAL ||
-			     internal_state.main_state == commander_state_s::MAIN_STATE_STAB ||
-			     internal_state.main_state == commander_state_s::MAIN_STATE_ALTCTL ||
-			     internal_state.main_state == commander_state_s::MAIN_STATE_POSCTL) &&
-			    status.rc_signal_lost) {
-
-				armed.force_failsafe = true;
-				status_changed = true;
-				static bool flight_termination_printed = false;
-
-				if (!flight_termination_printed) {
-					warnx("Flight termination because of RC signal loss and GPS failure");
-					flight_termination_printed = true;
-				}
-
-				if (counter % (1000000 / COMMANDER_MONITORING_INTERVAL) == 0) {
-					mavlink_log_critical(&mavlink_log_pub, "RC and GPS lost: flight termination");
-				}
 			}
 		}
 
+		if (armed.armed &&
+		    failure_detector_updated &&
+		    !_in_flight_termination &&
+		    !status_flags.circuit_breaker_flight_termination_disabled) {
 
-		/* Check for failure detector status */
-		if (armed.armed) {
+			if (status.failure_detector_status != 0) {
 
-			if (_failure_detector.update()) {
+				armed.force_failsafe = true;
+				status_changed = true;
 
-				const uint8_t failure_status = _failure_detector.get_status();
+				_in_flight_termination = true;
 
-				if (failure_status != status.failure_detector_status) {
-					status.failure_detector_status = failure_status;
-					status_changed = true;
-				}
-
-				if (failure_status != 0 && !status_flags.circuit_breaker_flight_termination_disabled) {
-
-					// TODO: set force_failsafe flag
-
-					if (!_failure_detector_termination_printed) {
-						mavlink_log_critical(&mavlink_log_pub, "Attitude failure detected: force failsafe");
-						_failure_detector_termination_printed = true;
-					}
-
-				}
+				mavlink_log_critical(&mavlink_log_pub, "Attitude failure detected: force failsafe");
+				set_tune_override(TONE_PARACHUTE_RELEASE_TUNE);
 			}
 		}
 

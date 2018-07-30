@@ -69,22 +69,28 @@ FailureDetector::update_attitude_status()
 		const float roll(euler.phi());
 		const float pitch(euler.theta());
 
-		const float max_roll_deg = _fail_trig_roll.get();
-		const float max_pitch_deg = _fail_trig_pitch.get();
+		const float max_roll_deg = FD_FAIL_R.get();
+		const float max_pitch_deg = FD_FAIL_P.get();
 		const float max_roll(fabsf(math::radians(max_roll_deg)));
 		const float max_pitch(fabsf(math::radians(max_pitch_deg)));
 
 		const bool roll_status = (max_roll > 0.0f) && (fabsf(roll) > max_roll);
 		const bool pitch_status = (max_pitch > 0.0f) && (fabsf(pitch) > max_pitch);
 
+		// Update hysteresis
+		_roll_failure_hysteresis.set_hysteresis_time_from(false, (hrt_abstime)(1e6f * FD_FAIL_R_TTRI.get()));
+		_pitch_failure_hysteresis.set_hysteresis_time_from(false, (hrt_abstime)(1e6f * FD_FAIL_P_TTRI.get()));
+		_roll_failure_hysteresis.set_state_and_update(roll_status);
+		_pitch_failure_hysteresis.set_state_and_update(pitch_status);
+
 		// Update bitmask
 		_status &= ~(FAILURE_ROLL | FAILURE_PITCH);
 
-		if (roll_status) {
+		if (_roll_failure_hysteresis.get_state()) {
 			_status |= FAILURE_ROLL;
 		}
 
-		if (pitch_status) {
+		if (_pitch_failure_hysteresis.get_state()) {
 			_status |= FAILURE_PITCH;
 		}
 

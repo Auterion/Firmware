@@ -46,6 +46,7 @@
 #include <matrix/matrix/math.hpp>
 #include <mathlib/mathlib.h>
 #include <px4_module_params.h>
+#include <systemlib/hysteresis/hysteresis.h>
 
 // subscriptions
 #include <uORB/Subscription.hpp>
@@ -74,8 +75,10 @@ public:
 private:
 
 	DEFINE_PARAMETERS(
-		(ParamInt<px4::params::FD_FAIL_P>) _fail_trig_pitch,
-		(ParamInt<px4::params::FD_FAIL_R>) _fail_trig_roll
+		(ParamInt<px4::params::FD_FAIL_P>) FD_FAIL_P,
+		(ParamInt<px4::params::FD_FAIL_R>) FD_FAIL_R,
+		(ParamFloat<px4::params::FD_FAIL_R_TTRI>) FD_FAIL_R_TTRI,
+		(ParamFloat<px4::params::FD_FAIL_P_TTRI>) FD_FAIL_P_TTRI
 	)
 
 	// Subscriptions
@@ -83,6 +86,9 @@ private:
 	Subscription<vehicle_attitude_s> _sub_vehicule_attitude;
 
 	uint8_t _status{FAILURE_NONE};
+
+	systemlib::Hysteresis _roll_failure_hysteresis{false};
+	systemlib::Hysteresis _pitch_failure_hysteresis{false};
 
 	bool update_attitude_status();
 };
