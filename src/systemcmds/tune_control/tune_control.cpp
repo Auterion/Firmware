@@ -78,6 +78,7 @@ usage()
 
 static void publish_tune_control(tune_control_s &tune_control)
 {
+	return;
 	tune_control.timestamp = hrt_absolute_time();
 
 	if (tune_control_pub == nullptr) {

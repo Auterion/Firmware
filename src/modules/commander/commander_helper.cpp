@@ -143,6 +143,10 @@ void buzzer_deinit()
 
 void set_tune_override(int tune)
 {
+	// for interdrone just play the parachute tune
+	if(tune != TONE_PARACHUTE_RELEASE_TUNE)
+		return;
+
 	tune_control.tune_id = tune;
 	tune_control.strength = tune_control_s::STRENGTH_NORMAL;
 	tune_control.tune_override = 1;
@@ -152,6 +156,8 @@ void set_tune_override(int tune)
 
 void set_tune(int tune)
 {
+	// for interdrone demo don't play any tunes except parachute tune which is handled by set_tune_override()
+	return;
 	unsigned int new_tune_duration = tune_durations[tune];
 
 	/* don't interrupt currently playing non-repeating tune by repeating */
