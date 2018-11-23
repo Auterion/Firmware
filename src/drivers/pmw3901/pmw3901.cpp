@@ -590,8 +590,8 @@ PMW3901::collect()
 
 	report.timestamp = timestamp;
 
-	report.pixel_flow_x_integral = static_cast<float>(delta_x);
-	report.pixel_flow_y_integral = static_cast<float>(delta_y);
+	report.pixel_flow_x_integral = -static_cast<float>(delta_x);
+	report.pixel_flow_y_integral = -static_cast<float>(delta_y);
 
 	// rotate measurements in yaw from sensor frame to body frame according to parameter SENS_FLOW_ROT
 	float zeroval = 0.0f;
