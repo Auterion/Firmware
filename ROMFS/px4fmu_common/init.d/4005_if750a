@@ -10,13 +10,13 @@ sh /etc/init.d/4001_quad_x
 
 if [ $AUTOCNF = yes ]
 then
-	V# Vehicle attitude PID tuning
+	# Vehicle attitude PID tuning
 	param set MC_DTERM_CUTOFF 25.0000
-	param set MC_PITCHRATE_D 0.0100
+	param set MC_PITCHRATE_D 0.0080
 	param set MC_PITCHRATE_I 0.2000
 	param set MC_PITCHRATE_P 0.2800
 	param set MC_PITCH_P 6.0000
-	param set MC_ROLLRATE_D 0.0100
+	param set MC_ROLLRATE_D 0.0080
 	param set MC_ROLLRATE_I 0.2000
 	param set MC_ROLLRATE_P 0.2800
 	param set MC_ROLL_P 6.0000
@@ -27,18 +27,24 @@ then
 
 	# Position Control Tuning
 	param set MPC_POS_MODE 3
+	param set MPC_ACC_HOR 3.000
+	param set MPC_ACC_HOR_MAX 4.000
+	param set MPC_AUTO_MODE 3
+	param set MPC_HOLD_MAX_XY 0.2000
+	param set MPC_JERK_MIN 3.0000
 	param set MPC_THR_HOVER 0.5200
-	param set MPC_XY_VEL_MAX 2.0000
+	param set MPC_XY_VEL_MAX 8.0000
 	param set MPC_XY_VEL_P 0.1200
+	param set MPC_YAW_MODE 3
 	param set MPC_Z_VEL_I 0.1000
 
 	# EKF2 parameters
 	param set EKF2_GPS_POS_X 0.0000
 	param set EKF2_GPS_POS_Y 0.1800
 	param set EKF2_GPS_POS_Z -0.1600
-	param set EKF2_HGT_MODE 0
-	param set EKF2_IMU_POS_X -0.0630
-	param set EKF2_IMU_POS_Y 0.0340
+	param set EKF2_HGT_MODE 1
+	param set EKF2_IMU_POS_X 0.0700
+	param set EKF2_IMU_POS_Y -0.0400
 	param set EKF2_OF_POS_X -0.1740
 	param set EKF2_OF_POS_Z 0.0460
 	param set EKF2_RNG_POS_X -0.1410
@@ -49,32 +55,54 @@ then
 	param set PWM_AUX_MIN 1150
 	param set PWM_AUX_RATE 400
 	param set PWM_MAIN_DIS3 1050
+	param set PWM_MAIN_DIS4 1500
 	param set PWM_MAIN_FAIL3 1050
-	param set PWM_AUX_RATE 400
+	param set PWM_MAIN_FAIL4 1500
 	param set PWM_MAX 1950
-	param set PWM_MIN 1120
+	param set PWM_MIN 1050
 	param set PWM_RATE 400
 	param set PWM_SBUS_MODE 1
 	param set SYS_USE_IO 1
 
 	# Sensors Parameters
-	param set SENS_BOARD_ROT 10
-	param set SENS_BOARD_X_OFF -0.3664
-	param set SENS_BOARD_Y_OFF 1.5339
+	param set SENS_BOARD_ROT 0
 	param set SENS_EN_LL40LS 2
 	param set SENS_FLOW_MAXHGT 15.0000
-	param set IMU_GYRO_CUTOFF 70.0000
+	param set IMU_GYRO_CUTOFF 45.0000
 
 	# MAVLink Parameters
+	param set MAV_0_CONFIG 101
+	param set MAV_0_FORWARD 1
+	param set MAV_0_MODE 0
+	param set MAV_0_RATE 1200
 	param set MAV_1_CONFIG 102
+	param set MAV_1_MODE 2
 	param set MAV_1_RATE 100000
+	param set SER_TEL1_BAUD 57600
 	param set SER_TEL2_BAUD 1500000
 
-	# RTK Parameters
+	# Logger Parameters
+	param set SDLOG_PROFILE 3
+
+	# Camera Trigger
+	param set TRIG_MODE 1
+	param set TRIG_INTERFACE 3
+	param set TRIG_PINS 56
+
+	# GPS Parameters
+	param set GPS_1_CONFIG 104
+	# Normal GPS
+	param set SER_GPS1_BAUD 0
+	# RTK
+	param set SER_TEL4_BAUD 115200
 	# To recalculate since antennas are not symmetric anymore
 	param set GPS_YAW_OFFSET 90.0000
 
 	# Power Parametets
 	param set BAT_N_CELLS 6
+	param set BAT_A_PER_V 36.3675
+
+	# Circuit breakers
+	param set CBRK_IO_SAFETY 22027
 
 fi
