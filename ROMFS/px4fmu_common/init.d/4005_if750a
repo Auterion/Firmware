@@ -31,12 +31,16 @@ then
 	param set MPC_ACC_HOR_MAX 4.000
 	param set MPC_AUTO_MODE 3
 	param set MPC_HOLD_MAX_XY 0.2000
-	param set MPC_JERK_MIN 3.0000
+	param set MPC_JERK_MIN 15.0000
+	param set MPC_JERK_MAX 20.0000
 	param set MPC_THR_HOVER 0.5200
 	param set MPC_XY_VEL_MAX 8.0000
 	param set MPC_XY_VEL_P 0.1200
 	param set MPC_YAW_MODE 3
-	param set MPC_Z_VEL_I 0.1000
+	param set MPC_Z_VEL_I 0.3500
+	param set MPC_Z_VEL_P 0.3000
+	param set MPC_LAND_SPEED 0.5000
+	param set MPC_THR_MIN 0.0800
 
 	# EKF2 parameters
 	param set EKF2_GPS_POS_X 0.0000
@@ -68,7 +72,7 @@ then
 	param set SENS_BOARD_ROT 0
 	param set SENS_EN_LL40LS 2
 	param set SENS_FLOW_MAXHGT 15.0000
-	param set IMU_GYRO_CUTOFF 45.0000
+	param set IMU_GYRO_CUTOFF 30.0000
 
 	# MAVLink Parameters
 	param set MAV_0_CONFIG 101
@@ -81,6 +85,10 @@ then
 	param set SER_TEL1_BAUD 57600
 	param set SER_TEL2_BAUD 1500000
 
+	# Mount Parameters
+	param set MNT_MODE_IN 0
+	param set MNT_MODE_OUT 0
+
 	# Logger Parameters
 	param set SDLOG_PROFILE 3
 
@@ -90,19 +98,26 @@ then
 	param set TRIG_PINS 56
 
 	# GPS Parameters
-	param set GPS_1_CONFIG 104
+	param set GPS_1_CONFIG 201
 	# Normal GPS
 	param set SER_GPS1_BAUD 0
 	# RTK
-	param set SER_TEL4_BAUD 115200
+	# param set SER_TEL4_BAUD 115200
 	# To recalculate since antennas are not symmetric anymore
-	param set GPS_YAW_OFFSET 90.0000
+	# param set GPS_YAW_OFFSET 90.0000
 
 	# Power Parametets
 	param set BAT_N_CELLS 6
 	param set BAT_A_PER_V 36.3675
+	param set BAT_CNT_V_CURR 0.0008
+	param set BAT_CNT_V_VOLT 0.0008
+	param set BAT_V_CHARGED 4.2000
+	param set BAT_V_DIV 11.2700
 
 	# Circuit breakers
 	param set CBRK_IO_SAFETY 22027
+
+	# Commander Parameters
+	param set COM_DISARM_LAND 1
 
 fi
