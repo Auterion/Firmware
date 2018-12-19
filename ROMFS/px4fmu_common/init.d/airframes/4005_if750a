@@ -1,4 +1,4 @@
-#!nsh
+#!/bin/sh
 #
 # @name IF750A
 #
@@ -6,7 +6,7 @@
 # @class Copter
 #
 
-sh /etc/init.d/4001_quad_x
+sh /etc/init.d/airframes/4001_quad_x
 
 if [ $AUTOCNF = yes ]
 then
@@ -29,11 +29,11 @@ then
 	param set MPC_POS_MODE 3
 	param set MPC_ACC_HOR 3.000
 	param set MPC_ACC_HOR_MAX 4.000
-	param set MPC_AUTO_MODE 3
-	param set MPC_HOLD_MAX_XY 0.2000
+	param set MPC_AUTO_MODE 1
 	param set MPC_JERK_MIN 15.0000
 	param set MPC_JERK_MAX 20.0000
 	param set MPC_THR_HOVER 0.5200
+	param set MPC_VEL_MANUAL 6.0
 	param set MPC_XY_VEL_MAX 8.0000
 	param set MPC_XY_VEL_P 0.1200
 	param set MPC_YAW_MODE 3
