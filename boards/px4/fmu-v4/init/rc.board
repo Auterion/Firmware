@@ -90,7 +90,8 @@ fi
 
 
 # Pixracer: start MAVLink on Wifi (ESP8266 port)
-mavlink start -r 20000 -b 921600 -d /dev/ttyS0
+#mavlink start -r 20000 -b 921600 -d /dev/ttyS0
+cm8jl65 start -d /dev/ttyS0
 
 # Run FrSky Telemetry on Pixracer on the FrSky port if not enabled already
 if param compare TEL_FRSKY_CONFIG 0
