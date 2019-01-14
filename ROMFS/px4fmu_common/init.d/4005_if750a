@@ -80,6 +80,7 @@ then
 	param set MAV_0_MODE 0
 	param set MAV_0_RATE 1200
 	param set MAV_1_CONFIG 102
+	param set MAV_1_FORWARD 1
 	param set MAV_1_MODE 2
 	param set MAV_1_RATE 100000
 	param set SER_TEL1_BAUD 57600
@@ -119,5 +120,10 @@ then
 
 	# Commander Parameters
 	param set COM_DISARM_LAND 1
+
+	# Land Detector Parameters
+    param set RTL_DESCEND_ALT 10.0000
+    param set RTL_LAND_DELAY 0.0000
+    param set RTL_RETURN_ALT 30.0000
 
 fi
