@@ -59,6 +59,8 @@
 #include "systemlib/err.h"
 #include "uORB/topics/actuator_controls.h"
 
+#define PWM_OUTPUT1_DEVICE_PATH	"/dev/pwm_output1"
+
 enum RampState {
 	RAMP_INIT,
 	RAMP_MIN,
@@ -317,13 +319,19 @@ int motor_ramp_thread_main(int argc, char *argv[])
 {
 	_thread_running = true;
 
-	char *dev = PWM_OUTPUT0_DEVICE_PATH;
+	char *dev = PWM_OUTPUT1_DEVICE_PATH;
 	unsigned long max_channels = 0;
+	int counter = 0;
 
 	int fd = px4_open(dev, 0);
 
 	if (fd < 0) {
 		PX4_ERR("can't open %s", dev);
+	}
+
+	if (::ioctl(fd, PWM_SERVO_SET_MODE, PWM_SERVO_ENTER_TEST_MODE) < 0) {
+				PX4_ERR("Failed to Enter pwm test mode");
+				return -1;
 	}
 
 	if (prepare(fd, &max_channels) != OK) {
@@ -340,7 +348,7 @@ int motor_ramp_thread_main(int argc, char *argv[])
 	enum RampState ramp_state = RAMP_INIT;
 	float output = 0.0f;
 
-	while (!_thread_should_exit) {
+	while (!_thread_should_exit && (counter <= 10)) {
 
 		if (last_run > 0) {
 			dt = hrt_elapsed_time(&last_run) * 1e-6;
@@ -399,6 +407,8 @@ int motor_ramp_thread_main(int argc, char *argv[])
 		case RAMP_WAIT: {
 				if (timer > 0.5f) {
 					_thread_should_exit = true;
+					counter++;
+					ramp_state = RAMP_MIN;
 					PX4_INFO("stopping");
 					break;
 				}
