@@ -382,6 +382,18 @@ MultirotorMixer::mix(float *outputs, unsigned space)
 							_thrust_factor));
 		}
 
+		const float thrust_in = math::constrain(get_control(0, 3), 0.0f, 1.0f);
+
+		if (!(0.f <= thrust_in && thrust_in <= 1.f)) {
+			outputs[i] = NAN;
+
+		} else if (thrust_in > 0.5f) {
+			outputs[i] = 1.f;
+
+		} else {
+			outputs[i] = 0.f;
+		}
+
 		outputs[i] = math::constrain(_idle_speed + (outputs[i] * (1.0f - _idle_speed)), _idle_speed, 1.0f);
 	}
 
