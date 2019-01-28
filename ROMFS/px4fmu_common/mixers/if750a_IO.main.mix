@@ -1,0 +1,13 @@
+
+# RC pass-throughs for pitch and yaw for gremsy gimbal
+M: 1
+S: 3 5  10000  10000      0 -10000  10000
+M: 1
+S: 3 6  10000  10000      0 -10000  10000
+
+# Channels to set roll and mode for gremsy gimbal
+Z:
+Z:
+
+# Channel for parachute
+Z:
