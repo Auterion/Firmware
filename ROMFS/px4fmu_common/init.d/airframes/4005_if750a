@@ -6,13 +6,7 @@
 # @class Copter
 #
 
-sh /etc/init.d/rc.mc_defaults
-
-set MIXER if750a_IO
-set PWM_OUT 12345
-
-set MIXER_AUX if750a_FMU
-set PWM_OUT_AUX 1234
+sh /etc/init.d/airframes/4001_quad_x
 
 if [ $AUTOCNF = yes ]
 then
@@ -86,15 +80,14 @@ then
 	param set MAV_0_MODE 0
 	param set MAV_0_RATE 1200
 	param set MAV_1_CONFIG 102
-	param set MAV_1_FORWARD 1
 	param set MAV_1_MODE 2
 	param set MAV_1_RATE 100000
 	param set SER_TEL1_BAUD 57600
 	param set SER_TEL2_BAUD 1500000
 
 	# Mount Parameters
-	#param set MNT_MODE_IN 0
-	#param set MNT_MODE_OUT 0
+	param set MNT_MODE_IN 0
+	param set MNT_MODE_OUT 0
 
 	# Logger Parameters
 	param set SDLOG_PROFILE 3
