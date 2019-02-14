@@ -3952,7 +3952,6 @@ void Commander::data_link_check(bool &status_changed)
 
 	// AVOIDANCE SYSTEM state check (only if it is enabled)
 	if (_obs_avoid.get()) {
-		static bool print_once = false;
 
 		//if avoidance never started
 		if (_datalink_last_heartbeat_avoidance_system == 0 && hrt_elapsed_time(&_avoidance_system_not_started) > 5_s) {
@@ -3965,12 +3964,9 @@ void Commander::data_link_check(bool &status_changed)
 		    && (hrt_elapsed_time(&_datalink_last_heartbeat_avoidance_system) > 5_s)) {
 			_avoidance_system_lost = true;
 
-			if (!print_once) {
-				mavlink_log_critical(&mavlink_log_pub, "AVOIDANCE SYSTEM LOST");
-				status_flags.avoidance_system_valid = false;
-				print_once = true;
-				status_changed = true;
-			}
+			mavlink_log_critical(&mavlink_log_pub, "AVOIDANCE SYSTEM LOST");
+			status_flags.avoidance_system_valid = false;
+			status_changed = true;
 
 		}
 
@@ -3983,7 +3979,6 @@ void Commander::data_link_check(bool &status_changed)
 			if (_datalink_last_status_avoidance_system == telemetry_status_s::MAV_STATE_ACTIVE) {
 				mavlink_log_info(&mavlink_log_pub, "AVOIDANCE SYSTEM HEALTHY");
 				status_flags.avoidance_system_valid = true;
-				print_once = false;
 				status_changed = true;
 			}
 
