@@ -3961,7 +3961,7 @@ void Commander::data_link_check(bool &status_changed)
 		}
 
 		//if heartbeats stop
-		if ((_datalink_last_heartbeat_avoidance_system > 0)
+		if (!_avoidance_system_lost && (_datalink_last_heartbeat_avoidance_system > 0)
 		    && (hrt_elapsed_time(&_datalink_last_heartbeat_avoidance_system) > 5_s)) {
 			_avoidance_system_lost = true;
 
