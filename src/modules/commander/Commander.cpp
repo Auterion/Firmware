@@ -3962,14 +3962,14 @@ void Commander::data_link_check(bool &status_changed)
 
 		//if heartbeats stop
 		if ((_datalink_last_heartbeat_avoidance_system > 0)
-		    && (hrt_elapsed_time(&_datalink_last_heartbeat_avoidance_system) > 5_s) &&
-		    (hrt_elapsed_time(&_avoidance_system_lost) > 5_s)) {
-			_avoidance_system_lost = hrt_absolute_time();
+		    && (hrt_elapsed_time(&_datalink_last_heartbeat_avoidance_system) > 5_s)) {
+			_avoidance_system_lost = true;
 
 			if (!print_once) {
 				mavlink_log_critical(&mavlink_log_pub, "AVOIDANCE SYSTEM LOST");
 				status_flags.avoidance_system_valid = false;
 				print_once = true;
+				status_changed = true;
 			}
 
 		}
@@ -3984,6 +3984,7 @@ void Commander::data_link_check(bool &status_changed)
 				mavlink_log_info(&mavlink_log_pub, "AVOIDANCE SYSTEM HEALTHY");
 				status_flags.avoidance_system_valid = true;
 				print_once = false;
+				status_changed = true;
 			}
 
 			if (_datalink_last_status_avoidance_system == telemetry_status_s::MAV_STATE_CRITICAL) {
@@ -3993,6 +3994,7 @@ void Commander::data_link_check(bool &status_changed)
 			if (_datalink_last_status_avoidance_system == telemetry_status_s::MAV_STATE_FLIGHT_TERMINATION) {
 				mavlink_log_critical(&mavlink_log_pub, "AVOIDANCE SYSTEM ABORT");
 				status_flags.avoidance_system_valid = false;
+				status_changed = true;
 			}
 
 			_avoidance_system_status_change = false;
