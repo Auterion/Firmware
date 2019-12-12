@@ -5,3 +5,4 @@
 
 # Start MAVLink on the USB port
 mavlink start -d /dev/ttyACM0
+mavlink start -x -u 14570 -r 200000 -t 192.168.0.1
