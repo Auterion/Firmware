@@ -133,7 +133,7 @@ static void pwm_deinitialize();
 
 static void send_outputs_pwm(const uint16_t *pwm);
 
-static void task_main_trampoline(int argc, char *argv[]);
+static int task_main_trampoline(int argc, char *argv[]);
 
 static void subscribe();
 
@@ -473,9 +473,10 @@ void task_main(int argc, char *argv[])
 	_is_running = false;
 }
 
-void task_main_trampoline(int argc, char *argv[])
+int task_main_trampoline(int argc, char *argv[])
 {
 	task_main(argc, argv);
+	return 0;
 }
 
 void start()

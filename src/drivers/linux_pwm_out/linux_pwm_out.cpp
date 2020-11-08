@@ -113,7 +113,7 @@ static void start();
 
 static void stop();
 
-static void task_main_trampoline(int argc, char *argv[]);
+static int task_main_trampoline(int argc, char *argv[]);
 
 static void subscribe();
 
@@ -452,9 +452,10 @@ void task_main(int argc, char *argv[])
 
 }
 
-void task_main_trampoline(int argc, char *argv[])
+int task_main_trampoline(int argc, char *argv[])
 {
 	task_main(argc, argv);
+	return 0;
 }
 
 void start()

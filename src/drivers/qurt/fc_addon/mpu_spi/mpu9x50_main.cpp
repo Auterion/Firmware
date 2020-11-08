@@ -137,7 +137,7 @@ static void usage();
 static void stop();
 
 /** task main trampoline function */
-static void	task_main_trampoline(int argc, char *argv[]);
+static int	task_main_trampoline(int argc, char *argv[]);
 
 /** mpu9x50 measurement thread primary entry point */
 static void task_main(int argc, char *argv[]);
@@ -535,10 +535,11 @@ exit:
 }
 
 /** mpu9x50 main entrance */
-void task_main_trampoline(int argc, char *argv[])
+int task_main_trampoline(int argc, char *argv[])
 {
 	PX4_WARN("task_main_trampoline");
 	task_main(argc, argv);
+	return 0;
 }
 
 void start()

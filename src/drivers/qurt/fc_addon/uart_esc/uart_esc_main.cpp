@@ -103,7 +103,7 @@ static void start(const char *device) __attribute__((unused));
 static void stop();
 
 /** task main trampoline function */
-static void	task_main_trampoline(int argc, char *argv[]);
+static int	task_main_trampoline(int argc, char *argv[]);
 
 /** uart_esc thread primary entry point */
 static void task_main(int argc, char *argv[]);
@@ -414,10 +414,11 @@ void task_main(int argc, char *argv[])
 }
 
 /** uart_esc main entrance */
-void task_main_trampoline(int argc, char *argv[])
+int task_main_trampoline(int argc, char *argv[])
 {
 	PX4_WARN("task_main_trampoline");
 	task_main(argc, argv);
+	return 0;
 }
 
 void start()

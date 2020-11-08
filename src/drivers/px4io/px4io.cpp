@@ -303,7 +303,7 @@ private:
 	/**
 	 * Trampoline to the worker task
 	 */
-	static void		task_main_trampoline(int argc, char *argv[]);
+	static int		task_main_trampoline(int argc, char *argv[]);
 
 	/**
 	 * worker task
@@ -892,10 +892,11 @@ PX4IO::init()
 	return OK;
 }
 
-void
+int 
 PX4IO::task_main_trampoline(int argc, char *argv[])
 {
 	g_dev->task_main();
+	return 0;
 }
 
 void
